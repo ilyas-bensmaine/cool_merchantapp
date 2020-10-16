@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.bastisapp.merchantapp" versionCode="1.0.2" version="1.0.2">
-  <name>Karenderia Merchant App</name>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.cool724.merchantapp" versionCode="1.0.2" version="1.0.2">
+  <name>Cool724 Merchant App</name>
   <description>
-        Karenderia Merchant App
+        Cool724 Merchant App
     </description>
-  <author email="bastikikang@gmail.com" href="http://cordova.io">
-        bastisapp.com
+  <author email="contact@cool724.com" href="http://cordova.io">
+        cool724.com
     </author>
   <content src="index.html"/>
   <preference name="orientation" value="portrait"/>
@@ -26,30 +26,30 @@
   <platform name="ios">
   
     <config-file platform="ios" target="*-Info.plist" parent="NSLocationAlwaysUsageDescription">
-      <string>This allows us to use your location to provide you a nearby restaurant, and to facilitate more accurately, keeping you in the loop about Karenderia.</string>
+      <string>This allows us to use your location to provide you a nearby restaurant, and to facilitate more accurately, keeping you in the loop about Cool724.</string>
     </config-file>
     <config-file platform="ios" target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
-      <string>This allows us to use your location to provide you a nearby restaurant, and to facilitate more accurately, keeping you in the loop about Karenderia.</string>
+      <string>This allows us to use your location to provide you a nearby restaurant, and to facilitate more accurately, keeping you in the loop about Cool724.</string>
     </config-file>
     <preference name="orientation" value="portrait"/>
   
   <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
-    <string>Enable Karenderia to access your camera to take photos of you and to save as profile picture.</string>
+    <string>Enable Cool724 to access your camera to take photos of you and to save as profile picture.</string>
   </edit-config>
   <edit-config target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="merge">
-    <string>Enable Karenderia to access your photo library to get pictures from there.</string>
+    <string>Enable Cool724 to access your photo library to get pictures from there.</string>
   </edit-config>
   <edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
     <string>This allows us to use your location to find restaurant nearby.</string>
   </edit-config>
   <edit-config target="NSLocationAlwaysAndWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
-    <string>This allows us to use your location to provide you a nearby restaurant, and to facilitate more accurately, keeping you in the loop about Karenderia.</string>
+    <string>This allows us to use your location to provide you a nearby restaurant, and to facilitate more accurately, keeping you in the loop about Cool724.</string>
   </edit-config>
   <edit-config target="NSLocationAlwaysUsageDescription" file="*-Info.plist" mode="merge">
     <string>This allows us to use your location to find restaurant nearby.</string>
   </edit-config>
   <edit-config target="NSPhotoLibraryAddUsageDescription" file="*-Info.plist" mode="merge">
-    <string>Enable Karenderia to access your photo library to save pictures there.</string>
+    <string>Enable Cool724 to access your photo library to save pictures there.</string>
   </edit-config>
   <edit-config target="NSMicrophoneUsageDescription" file="*-Info.plist" mode="merge">
     <string>need microphone access to record sounds</string>
