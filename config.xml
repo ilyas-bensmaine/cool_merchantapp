@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.cool724.merchantapp" versionCode="1.0.2" version="1.0.2">
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.cool724.merchantappv2" versionCode="1.0.0" version="1.0.0">
   <name>Cool724 Merchant App</name>
   <description>
         Cool724 Merchant App
     </description>
-  <author email="contact@cool724.com" href="http://cordova.io">
+  <author email="cool724.website@gmail.com" href="http://cordova.io">
         cool724.com
     </author>
   <content src="index.html"/>
@@ -69,6 +69,12 @@
   <edit-config target="NSMotionUsageDescription" file="*-Info.plist" mode="merge">
     <string>Improve location accuracy when finding nearby restaurant</string>
   </edit-config>
+  
+  <!--<config-file platform="ios" target="*-Info.plist" parent="UIBackgroundModes">
+    <array>
+        <string>audio</string>
+    </array>
+  </config-file>-->
     
   </platform>
   
