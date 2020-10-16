@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "452096553321",
+    "firebase_url": "https://merchantappv2-286112.firebaseio.com",
+    "project_id": "merchantappv2-286112",
+    "storage_bucket": "merchantappv2-286112.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:452096553321:android:bed4f020a74bbd57534df8",
+        "android_client_info": {
+          "package_name": "com.cool724.merchantappv2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "452096553321-btcpesgh21se0vn63ulh4ct99jphnn6l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAj50mJgY6SuRFlKz2HrgMW2q7CuAJJ09w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "452096553321-btcpesgh21se0vn63ulh4ct99jphnn6l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
