@@ -380,17 +380,21 @@ document.addEventListener('init', function(event) {
 			{'field_name':"merchant_photo_bg", "label": "Merchant Header", "type":"upload_image2", 
 				"upload_option_name" : 'merchant_photo_bg', "upload_next_action":"display_image", "upload_type":1, "thumbnail": '', "value": ''  },	
 
+			  /*
 			  {'field_name':"", "label": "Order Options", "type":"h3"},
 			  {'field_name':"order_verification", "label": "Enabled Order SMS Verification", "type":"checkbox","value": 2},
 			  {'field_name':"order_sms_code_waiting", "label": "Customer can request sms code every", "type":"number"},			  
-			  {'field_name':"", "label": "Food Item Options", "type":"h3"},
+			  */
 			  
+			  {'field_name':"", "label": "Food Item Options", "type":"h3"},
 			  {'field_name':"", "label": "If item is not available do the following actions", "type":"h4"},
 			  {'field_name':"food_option_not_available", "label": "Hide", "type":"radio","value": 1},
 			  {'field_name':"food_option_not_available", "label": "Disabled", "type":"radio","value": 2},
 			  
 			  {'field_name':"disabled_food_gallery", "label": "Disabled food gallery", "type":"checkbox","value": 2},
 			  {'field_name':"food_viewing_private", "label": "Make menu private", "type":"checkbox","value": 2},
+			  
+			  /*
 			  
 			  {'field_name':"", "label": "Two Flavor Options", "type":"h3"},			  
 			  {'field_name':"merchant_two_flavor_option", "label": "Choose option", "type":"select", "data": $settings.two_flavor_options },
@@ -401,7 +405,8 @@ document.addEventListener('init', function(event) {
 			  {'field_name':"", "label": "Printing Options", "type":"h3"},			  
 			  {'field_name':"printing_receipt_width", "label": "Receipt Width", "type":"text"},
 			  {'field_name':"printing_receipt_size", "label": "Font size", "type":"text"},
-			  
+			  */
+
 			  {'field_name':"", "label": "Free Delivery Options", "type":"h3"},			  
 			  {'field_name':"free_delivery_above_price", "label": "Free delivery above Sub Total Order", "type":"number"},
 			  
@@ -410,12 +415,14 @@ document.addEventListener('init', function(event) {
 			  {'field_name':"merchant_show_time", "label": "Show Merchant Current Time", "type":"checkbox","value": "yes"},
 			  {'field_name':"merchant_disabled_ordering", "label": "Disabled Ordering", "type":"checkbox","value": "yes"},
 			  
+			  /*
 			  {'field_name':"", "label": "External Website", "type":"h3"},
 			  {'field_name':"merchant_extenal", "label": "Website address", "type":"text"},
+				*/ 
 			  {'field_name':"merchant_enabled_voucher", "label": "Enabled Voucher", "type":"checkbox","value": "yes"},
 			  {'field_name':"merchant_required_delivery_time", "label": "Make Delivery Time Required", "type":"checkbox","value": "yes"},
 			  
-			  {'field_name':"", "label": "Delivery", "type":"h3"},
+			  {'field_name':"", "label": "Delivery", "type":"h3", },
 			  {'field_name':"merchant_minimum_order", "label": "Minimum purchase amount", "type":"number"},			  
 			  {'field_name':"merchant_maximum_order", "label": "Maximum purchase amount", "type":"number"},			  
 			  
@@ -423,17 +430,22 @@ document.addEventListener('init', function(event) {
 			  {'field_name':"merchant_minimum_order_pickup", "label": "Minimum purchase amount", "type":"number"},			  
 			  {'field_name':"merchant_maximum_order_pickup", "label": "Maximum purchase amount", "type":"number"},			  
 			  
+			  /*
 			  {'field_name':"", "label": "Dine in", "type":"h3"},
 			  {'field_name':"merchant_minimum_order_dinein", "label": "Minimum purchase amount", "type":"number"},			  
 			  {'field_name':"merchant_maximum_order_dinein", "label": "Maximum purchase amount", "type":"number"},			  
 			  
+
 			  {'field_name':"", "label": "Packaging Charge", "type":"h3"},
 			  {'field_name':"", "label": "When this is enabled packaging charge will be use is what you set in food item", "type":"h4"},
 			  {'field_name':"merchant_packaging_wise", "label": "Enabled Packaging Wise", "type":"checkbox","value": 1},
 			  
 			  {'field_name':"merchant_packaging_charge", "label": "Packaging Charge", "type":"number"},			  
+			  /*
 			  {'field_name':"merchant_packaging_increment", "label": "Packaging Incremental", "type":"checkbox","value": 2},
-			  
+			  */
+
+			  /*
 			  {'field_name':"", "label": "Tax & Delivery Charges", "type":"h3"},
 			  {'field_name':"merchant_tax", "label": "Tax", "type":"number"},	
 			  {'field_name':"merchant_delivery_charges", "label": "Delivery Charges", "type":"number"},
@@ -445,16 +457,19 @@ document.addEventListener('init', function(event) {
 			  
 			  {'field_name':"merchant_delivery_miles", "label": "Delivery Distance Covered", "type":"number"},
 			  
+
 			  {'field_name':"merchant_distance_type", "label": "Unit", "type":"select", "data":  $settings.distance_unit },
+			
 			  
 			  {'field_name':"", "label": "Tips", "type":"h3"},
 			  {'field_name':"merchant_enabled_tip", "label": "Enabled", "type":"checkbox","value": 2},
 			  {'field_name':"merchant_tip_default", "label": "Default Tip", "type":"select", "data": $settings.tip_list },
 			  
+
 			  {'field_name':"", "label": "Store Hours", "type":"h3"},
 			  {'field_name':"merchant_timezone", "label": "Time Zone", "type":"select", "data": $settings.timezone_list },
 			  {'field_name':"website_merchant_time_picker_interval", "label": "Time picker list interval", "type":"number"},
-			  
+			  */
 			];
     	  setFormFields(fields);
     	  processAjax("getMerchantSettings",'','POST',5);
@@ -664,7 +679,7 @@ document.addEventListener('init', function(event) {
 			  {'field_name':"", "label": "Ingredients", "type":"h3"},			  			  
 			  {'field_name':"ingredient_list", "label": "Ingredients", "type":"text", "readonly":1, 
 			  "onclick":"showPage('selection_list.html','',{'list_action':'IngredList','list':'ingredient_list','field':'ingredients','page_title':'Select Ingredients'} )","required":0,"value":ingredients },
-			  
+			/*  
 			  {'field_name':"", "label": "Dish", "type":"h3"},			  			  
 			  {'field_name':"dish_list", "label": "Dish", "type":"text", "readonly":1, 
 			  "onclick":"showPage('selection_list.html','',{'list_action':'DishList','list':'dish_list','field':'dish','page_title':'Select dish'} )","required":0,"value":dish },
@@ -678,7 +693,7 @@ document.addEventListener('init', function(event) {
 			  
 			  {'field_name':"", "label": "Two Flavors", "type":"h3"},			  			
 			  {'field_name':"two_flavors", "label": "Enabled", "type":"checkbox","value": 2 , "checked" : two_flavors , "onclick" : "showHideTwoFlavor();"},
-
+			*/
 			  
 			  {'field_name':"", "label": "Addon item", "type":"h3"},	
 			  
@@ -1255,13 +1270,13 @@ document.addEventListener('init', function(event) {
     	case "store_hours":
     	  
     	   var days = [
-    	     {"value":"monday","label":"Monday"},
+			 {"value":"sunday","label":"Sunday"},
+			 {"value":"monday","label":"Monday"},
     	     {"value":"tuesday","label":"Tuesday"},
     	     {"value":"wednesday","label":"Wednesday"},
     	     {"value":"thursday","label":"Thursday"},
     	     {"value":"friday","label":"Friday"},
     	     {"value":"saturday","label":"Saturday"},
-    	     {"value":"sunday","label":"Sunday"},
     	   ];
     	   
     	   $field_list = [];    	       	   
