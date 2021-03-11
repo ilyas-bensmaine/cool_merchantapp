@@ -51,12 +51,6 @@ var timenow;
 var $order_list_need_refresh = 0;
 var $item_added_addon = [];
 
-var dialog_printer_bt;
-var $actions_sheet_printer = [];    
-var $actions_sheet_printer_reload = false;
-
-var BT_has_perform_btscan = false;
-
 jQuery.fn.exists = function(){return this.length>0;}
 
 dump = function(data) {
@@ -239,7 +233,6 @@ document.addEventListener('show', function(event) {
     	break;
     	    	    
     	case "settings":
-    	    	  
     	  $(".breadcrumbs").html( t("Settings") );
     	  if( isdebug() ){	
     	     $(".app_version").html("1.0.0");
@@ -249,9 +242,6 @@ document.addEventListener('show', function(event) {
     	      	  
     	  displayAppAwake();
     	  processAjax( "GetAlertSettings" ,'','POST',1,'silent');    	  
-    	  
-    	      	  
-    	  
     	break;
     	
     	case "dashboard":
@@ -290,7 +280,7 @@ document.addEventListener('init', function(event) {
     $settings = getMerchantSettings(); 
    
     switch(page_id){
-    	case "page_settings":    	    	     
+    	case "page_settings":    	    	    	    
     	    processAjax("getsettings",'','POST',2,'silent');    	  
     	break;
     	
@@ -334,19 +324,11 @@ document.addEventListener('init', function(event) {
 			  {'field_name':"street", "label": "Street address", "type":"text","required":1},
 			  {'field_name':"city", "label": "City", "type":"text","required":1},			  
 			  {'field_name':"post_code", "label": "Post code/Zip code", "type":"text","required":1},
-			  {'field_name':"state", "label": "State/Region", "type":"text","required":1},			  
-			  //{'field_name':"is_ready", "label": "Published Merchant", "type":"checkbox","value": 2},
-			];
-			
-		  
-		  $can_published = canPublished();		  
-		  if($can_published){
-		     fields.push({'field_name':"is_ready", "label": "Published Merchant", "type":"checkbox","value": 2});			
-		  }
-			
-		  $fields2 = [
-		  		  
-		      {'field_name':"", "label": "Services", "type":"h3"},
+			  {'field_name':"state", "label": "State/Region", "type":"text","required":1},
+			  
+			  {'field_name':"is_ready", "label": "Published Merchant", "type":"checkbox","value": 2},
+			  
+			  {'field_name':"", "label": "Services", "type":"h3"},
 			  
 			  {'field_name':"cuisine_list", "label": "Cuisine", "type":"text", "readonly":1, 
 			  "onclick":"showPage('selection_list.html','',{'list_action':'getCuisineList','list':'cuisine_list','field':'cuisine','page_title':'Select cuisine'} )","required":1 },
@@ -362,12 +344,11 @@ document.addEventListener('init', function(event) {
 			  {'field_name':"latitude", "label": "Latitude", "type":"text","required":0 , "readonly":1,
 			   "onclick" : "showPage('map.html','',{'map_title':'Select location','action':'merchant_location'} )" },
 			  {'field_name':"lontitude", "label": "Longitude", "type":"text","required":0, "readonly":1,
-			  "onclick" : "showPage('map.html','',{'map_title':'Select location','action':'merchant_location'})"},  
-		  
-		  ];
-		  			
+			  "onclick" : "showPage('map.html','',{'map_title':'Select location','action':'merchant_location'})"},
+			  
+			];
+			
     	  setFormFields(fields);
-    	  setFormFields($fields2);
     	  processAjax("getMerchantinformation",'','POST',3);
     	break;
     	    	    	
@@ -399,17 +380,21 @@ document.addEventListener('init', function(event) {
 			{'field_name':"merchant_photo_bg", "label": "Merchant Header", "type":"upload_image2", 
 				"upload_option_name" : 'merchant_photo_bg', "upload_next_action":"display_image", "upload_type":1, "thumbnail": '', "value": ''  },	
 
+			  /*
 			  {'field_name':"", "label": "Order Options", "type":"h3"},
 			  {'field_name':"order_verification", "label": "Enabled Order SMS Verification", "type":"checkbox","value": 2},
 			  {'field_name':"order_sms_code_waiting", "label": "Customer can request sms code every", "type":"number"},			  
-			  {'field_name':"", "label": "Food Item Options", "type":"h3"},
+			  */
 			  
+			  {'field_name':"", "label": "Food Item Options", "type":"h3"},
 			  {'field_name':"", "label": "If item is not available do the following actions", "type":"h4"},
 			  {'field_name':"food_option_not_available", "label": "Hide", "type":"radio","value": 1},
 			  {'field_name':"food_option_not_available", "label": "Disabled", "type":"radio","value": 2},
 			  
 			  {'field_name':"disabled_food_gallery", "label": "Disabled food gallery", "type":"checkbox","value": 2},
 			  {'field_name':"food_viewing_private", "label": "Make menu private", "type":"checkbox","value": 2},
+			  
+			  /*
 			  
 			  {'field_name':"", "label": "Two Flavor Options", "type":"h3"},			  
 			  {'field_name':"merchant_two_flavor_option", "label": "Choose option", "type":"select", "data": $settings.two_flavor_options },
@@ -420,7 +405,8 @@ document.addEventListener('init', function(event) {
 			  {'field_name':"", "label": "Printing Options", "type":"h3"},			  
 			  {'field_name':"printing_receipt_width", "label": "Receipt Width", "type":"text"},
 			  {'field_name':"printing_receipt_size", "label": "Font size", "type":"text"},
-			  
+			  */
+
 			  {'field_name':"", "label": "Free Delivery Options", "type":"h3"},			  
 			  {'field_name':"free_delivery_above_price", "label": "Free delivery above Sub Total Order", "type":"number"},
 			  
@@ -429,12 +415,14 @@ document.addEventListener('init', function(event) {
 			  {'field_name':"merchant_show_time", "label": "Show Merchant Current Time", "type":"checkbox","value": "yes"},
 			  {'field_name':"merchant_disabled_ordering", "label": "Disabled Ordering", "type":"checkbox","value": "yes"},
 			  
+			  /*
 			  {'field_name':"", "label": "External Website", "type":"h3"},
 			  {'field_name':"merchant_extenal", "label": "Website address", "type":"text"},
+				*/ 
 			  {'field_name':"merchant_enabled_voucher", "label": "Enabled Voucher", "type":"checkbox","value": "yes"},
 			  {'field_name':"merchant_required_delivery_time", "label": "Make Delivery Time Required", "type":"checkbox","value": "yes"},
 			  
-			  {'field_name':"", "label": "Delivery", "type":"h3"},
+			  {'field_name':"", "label": "Delivery", "type":"h3", },
 			  {'field_name':"merchant_minimum_order", "label": "Minimum purchase amount", "type":"number"},			  
 			  {'field_name':"merchant_maximum_order", "label": "Maximum purchase amount", "type":"number"},			  
 			  
@@ -442,17 +430,22 @@ document.addEventListener('init', function(event) {
 			  {'field_name':"merchant_minimum_order_pickup", "label": "Minimum purchase amount", "type":"number"},			  
 			  {'field_name':"merchant_maximum_order_pickup", "label": "Maximum purchase amount", "type":"number"},			  
 			  
+			  /*
 			  {'field_name':"", "label": "Dine in", "type":"h3"},
 			  {'field_name':"merchant_minimum_order_dinein", "label": "Minimum purchase amount", "type":"number"},			  
 			  {'field_name':"merchant_maximum_order_dinein", "label": "Maximum purchase amount", "type":"number"},			  
 			  
+
 			  {'field_name':"", "label": "Packaging Charge", "type":"h3"},
 			  {'field_name':"", "label": "When this is enabled packaging charge will be use is what you set in food item", "type":"h4"},
 			  {'field_name':"merchant_packaging_wise", "label": "Enabled Packaging Wise", "type":"checkbox","value": 1},
 			  
 			  {'field_name':"merchant_packaging_charge", "label": "Packaging Charge", "type":"number"},			  
+			  /*
 			  {'field_name':"merchant_packaging_increment", "label": "Packaging Incremental", "type":"checkbox","value": 2},
-			  
+			  */
+
+			  /*
 			  {'field_name':"", "label": "Tax & Delivery Charges", "type":"h3"},
 			  {'field_name':"merchant_tax", "label": "Tax", "type":"number"},	
 			  {'field_name':"merchant_delivery_charges", "label": "Delivery Charges", "type":"number"},
@@ -464,16 +457,19 @@ document.addEventListener('init', function(event) {
 			  
 			  {'field_name':"merchant_delivery_miles", "label": "Delivery Distance Covered", "type":"number"},
 			  
+
 			  {'field_name':"merchant_distance_type", "label": "Unit", "type":"select", "data":  $settings.distance_unit },
+			
 			  
 			  {'field_name':"", "label": "Tips", "type":"h3"},
 			  {'field_name':"merchant_enabled_tip", "label": "Enabled", "type":"checkbox","value": 2},
 			  {'field_name':"merchant_tip_default", "label": "Default Tip", "type":"select", "data": $settings.tip_list },
 			  
+
 			  {'field_name':"", "label": "Store Hours", "type":"h3"},
 			  {'field_name':"merchant_timezone", "label": "Time Zone", "type":"select", "data": $settings.timezone_list },
 			  {'field_name':"website_merchant_time_picker_interval", "label": "Time picker list interval", "type":"number"},
-			  
+			  */
 			];
     	  setFormFields(fields);
     	  processAjax("getMerchantSettings",'','POST',5);
@@ -683,7 +679,7 @@ document.addEventListener('init', function(event) {
 			  {'field_name':"", "label": "Ingredients", "type":"h3"},			  			  
 			  {'field_name':"ingredient_list", "label": "Ingredients", "type":"text", "readonly":1, 
 			  "onclick":"showPage('selection_list.html','',{'list_action':'IngredList','list':'ingredient_list','field':'ingredients','page_title':'Select Ingredients'} )","required":0,"value":ingredients },
-			  
+			/*  
 			  {'field_name':"", "label": "Dish", "type":"h3"},			  			  
 			  {'field_name':"dish_list", "label": "Dish", "type":"text", "readonly":1, 
 			  "onclick":"showPage('selection_list.html','',{'list_action':'DishList','list':'dish_list','field':'dish','page_title':'Select dish'} )","required":0,"value":dish },
@@ -697,7 +693,7 @@ document.addEventListener('init', function(event) {
 			  
 			  {'field_name':"", "label": "Two Flavors", "type":"h3"},			  			
 			  {'field_name':"two_flavors", "label": "Enabled", "type":"checkbox","value": 2 , "checked" : two_flavors , "onclick" : "showHideTwoFlavor();"},
-
+			*/
 			  
 			  {'field_name':"", "label": "Addon item", "type":"h3"},	
 			  
@@ -1021,20 +1017,8 @@ document.addEventListener('init', function(event) {
     	   
     	   setTimeout(function(){	
 		      notifyMediaSounds();
-		   }, 1000);    
-		   
-		   if ((typeof  $settings.options.merchant_close_store !== "undefined") && ( $settings.options.merchant_close_store !== null)) {
-		       setCloseStore( $settings.options.merchant_close_store );
-		   }
-		   
-		   if( $m = getMerchantInfo()){		   	   
-		   	   if ((typeof  $m.merchant_close_store !== "undefined") && ( $m.merchant_close_store !== null)) {		   	   	    
-		   	   	    setCloseStore( $m.merchant_close_store );
-		   	   }
-		   }    
-		   
-		   addListenerCloseStore();
-		   		       	   
+		   }, 1000);    	   
+    	   
     	break;    
     	
     	case "todays_order":    
@@ -1042,7 +1026,7 @@ document.addEventListener('init', function(event) {
     	  	      	  
     	  list_action = "order_list";
     	  params = 'new=1&page_id='+page_id+'&order_type=incoming';
-    	  processAjax(list_action,params,'POST','', 'paginate_loader');     	      	  
+    	  processAjax(list_action,params,'POST',10, 'paginate_loader');     	      	  
     	  infinitePage(page,list_action, params );
     	  initPullHook(list_action,page_id, params );
    	  
@@ -1067,7 +1051,7 @@ document.addEventListener('init', function(event) {
 	    	  $interval_cancel = $interval_cancel>0?$interval_cancel:1;
 	    	  $interval_ready_order = $interval_ready_order>0?$interval_ready_order:1;
 	    	  
-	    	  $interval_new = parseInt($interval_new)*50000;  //60000	    	  
+	    	  $interval_new = parseInt($interval_new)*60000;
 	    	  $interval_cancel = parseInt($interval_cancel)*60000;
 	    	  $interval_ready_order = parseInt($interval_ready_order)*60000;
 	    	  
@@ -1092,7 +1076,7 @@ document.addEventListener('init', function(event) {
     	  params = 'page_id='+page_id+'&order_type=ready';
     	  processAjax(list_action,params,'POST',12, 'paginate_loader');     	      	  
     	  infinitePage(page,list_action, params );
-    	  initPullHook(list_action,page_id, params );      	  
+    	  initPullHook(list_action,page_id, params );    	      	      	  
     	break;
     	
     	case "all_orders":
@@ -1188,30 +1172,28 @@ document.addEventListener('init', function(event) {
     	
     	case "todays_booking":
     	  
-    	  setTimeout(function(){		
-	    	  if( isTableEnabled($settings)  ){  	  
+    	  if( isTableEnabled($settings)  ){  	  
+    	  
+	    	  list_action = "booking_list";
+	    	  params = 'page_id='+page_id+'&booking_type=incoming';
+	    	  processAjax(list_action,params,'POST',17, 'paginate_loader');     	      	  
+	    	  infinitePage(page,list_action, params );
+	    	  initPullHook(list_action,page_id, params );   
 	    	  
-		    	  list_action = "booking_list";
-		    	  params = 'page_id='+page_id+'&booking_type=incoming';
-		    	  processAjax(list_action,params,'POST',17, 'paginate_loader');     	      	  
-		    	  infinitePage(page,list_action, params );
-		    	  initPullHook(list_action,page_id, params );   
-		    	  
-		    	  if($enabled_cron){
-		    	  $handle_todays_booking =  setInterval(function(){runCron('todays_booking',page_id)}, new_order_interval+3000 ); 
-		    	  
-		    	  $booking_new = !isNaN($settings.options.refresh_booking)?$settings.options.refresh_booking:3;    	  
-		    	  $booking_new = parseInt($booking_new)*60000;    	      	  
-		    	  $handle_refresh_booking = setInterval(function(){runCron('refresh_booking',page_id)}, $booking_new );    	  
-		    	  
-		    	  
-		    	  $booking_cancel = !isNaN($settings.options.refresh_cancel_booking)?$settings.options.refresh_cancel_booking:3;    	  
-		    	  $booking_cancel = parseInt($booking_cancel)*60000;    	  
-		    	  $handle_refresh_cancel_booking = setInterval(function(){runCron('refresh_cancel_booking','cancel_booking')}, $booking_cancel );    	  
-		    	  }
+	    	  if($enabled_cron){
+	    	  $handle_todays_booking =  setInterval(function(){runCron('todays_booking',page_id)}, new_order_interval+3000 ); 
 	    	  
-	    	  }    	  
-    	  }, 1*1500);    
+	    	  $booking_new = !isNaN($settings.options.refresh_booking)?$settings.options.refresh_booking:3;    	  
+	    	  $booking_new = parseInt($booking_new)*60000;    	      	  
+	    	  $handle_refresh_booking = setInterval(function(){runCron('refresh_booking',page_id)}, $booking_new );    	  
+	    	  
+	    	  
+	    	  $booking_cancel = !isNaN($settings.options.refresh_cancel_booking)?$settings.options.refresh_cancel_booking:3;    	  
+	    	  $booking_cancel = parseInt($booking_cancel)*60000;    	  
+	    	  $handle_refresh_cancel_booking = setInterval(function(){runCron('refresh_cancel_booking','cancel_booking')}, $booking_cancel );    	  
+	    	  }
+    	  
+    	  }
     	break;
     	
     	
@@ -1258,25 +1240,21 @@ document.addEventListener('init', function(event) {
     	
     	case "push_list":    	 
 
-    	  setTimeout(function(){	
-    	  	
-	    	  $_fields = [
-	    	    {'field_name':"s", "label":t("Search") },    	    
-	    	  ];
-	    	  translateForm(page_id,$_fields);  		
-	    	 	  
-	    	  list_action = "notificationList";    	  
-	    	  params = 'page_id='+page_id+'&list_type=unread';
-	    	  processAjax(list_action,params,'POST','', 'paginate_loader');     	      	  
-	    	  infinitePage(page,list_action, params );
-	    	  initPullHook(list_action,page_id, params );      	
-	    	  
-	    	  
-	    	  if($enabled_cron){
-	    	  	 $handle_push_list =  setInterval(function(){runCron('push_list','push_list')}, new_order_interval+3000 );
-	    	  }
+    	  $_fields = [
+    	    {'field_name':"s", "label":t("Search") },    	    
+    	  ];
+    	  translateForm(page_id,$_fields);  		
+    	 	  
+    	  list_action = "notificationList";
+    	  params = 'page_id='+page_id+'&list_type=unread';
+    	  processAjax(list_action,params,'POST',22, 'paginate_loader');     	      	  
+    	  infinitePage(page,list_action, params );
+    	  initPullHook(list_action,page_id, params );      	
     	  
-    	   }, 1*1000);    	
+    	  
+    	  if($enabled_cron){
+    	  	 $handle_push_list =  setInterval(function(){runCron('push_list','push_list')}, new_order_interval+3000 );
+    	  }
     	    
     	break;
     	
@@ -1292,13 +1270,13 @@ document.addEventListener('init', function(event) {
     	case "store_hours":
     	  
     	   var days = [
-    	     {"value":"monday","label":"Monday"},
+			 {"value":"sunday","label":"Sunday"},
+			 {"value":"monday","label":"Monday"},
     	     {"value":"tuesday","label":"Tuesday"},
     	     {"value":"wednesday","label":"Wednesday"},
     	     {"value":"thursday","label":"Thursday"},
     	     {"value":"friday","label":"Friday"},
     	     {"value":"saturday","label":"Saturday"},
-    	     {"value":"sunday","label":"Sunday"},
     	   ];
     	   
     	   $field_list = [];    	       	   
@@ -1568,116 +1546,6 @@ document.addEventListener('init', function(event) {
     	  processAjax("getDriverProfile",'driver_id=' +  page.data.driver_id );
     	break;
     	
-    	case "printer_list":
-    	
-    	  /*setTimeout(function(){
-    	    checkLocationPermission();
-    	  }, 500); */
-    	
-    	  list_action = "printerList";
-    	  params = 'new=1&page_id='+page_id;
-    	  processAjax(list_action,params,'POST',10, 'paginate_loader');     	      	  
-    	  infinitePage(page,list_action, params );
-    	  initPullHook(list_action,page_id, params );
-    	 
-    	break;
-    	
-    	case "printer_add":
-    	
-    	 setTimeout(function(){
-    	 	BT_bt_check_count = 0; BT_has_perform_btscan = false;
-    	    checkBluetooth('');
-    	  },  1*500); 
-    	
-    	 $settings_interface = []; $paper_width = []; $id=''; $char_set_list = []; $char_set='';
-    	 $printer_name=''; $interface_type=''; $mac_address=''; 
-    	 $data1=''; $data2='';
-    	 $paper_width=''; $bt_paper_width=''; $bluetooth_printer_name=''; $auto_print=''; $auto_print_accepted='';
-    	 
-    	 if ((typeof  $settings.bluetooth !== "undefined") && ( $settings.bluetooth !== null)) {    	 	
-    	 	$settings_interface  = $settings.bluetooth.interface_type;
-    	 	$paper_width = $settings.bluetooth.pape_width;
-    	 	$char_set_list = $settings.bluetooth.char_set;
-    	 }    	 
-
-    	 if(!empty(page.data.id)){    	 	 
-    	 	 $id = page.data.id;
-    	 	 $printer_name = page.data.printer_name;    	 	 
-    	 	 $interface_type = page.data.interface_type;    
-    	 	 $mac_address = page.data.mac_address;
-    	 	 $bt_paper_width = page.data.paper_width;
-    	 	 $auto_print = page.data.auto_print;
-    	 	 $auto_print_accepted = page.data.auto_print_after_accepted;
-    	 	 $data1 = page.data.data1;
-    	 	 $data2 = page.data.data2;
-    	 	 $bluetooth_printer_name = page.data.bluetooth_printer_name;
-    	 	 $char_set = page.data.char_set;
-    	 }
-    	 
-    	 fields = [
-    	    {'field_name':"printer_name", "label": "Name", "type":"text", "value" : $printer_name,  "required":1  }, 
-    	    {'field_name':"interface_type", "label": "Interface", "type":"select", "data":  $settings_interface , "selected": $interface_type },
-    	    {'field_name':"mac_address", "label": "mac_address", "type":"hidden", "value" : $mac_address  },
-    	    {'field_name':"data1", "label": "data1", "type":"hidden", "value" : $data1  },
-			{'field_name':"data2", "label": "data2", "type":"hidden", "value" : $data2  },
-    	        	    
-    	    {'field_name':"bluetooth_printer_name", "label": "Bluetooth printer", "type":"text_bt", "value" : $bluetooth_printer_name,  "required":1 , 'readonly': 1 }, 
-			      
-			{'field_name':"paper_width", "label": "Paper width", "type":"select", "data":  $paper_width , "selected": $bt_paper_width },   						
-			{'field_name':"char_set", "label": "Charset", "type":"select", "data":  $char_set_list , "selected": $char_set },   			
-			
-    	  ];    
-    	  if($auto_print==1){
-    	  	 fields.push( {'field_name':"auto_print", "label": "Auto print", "type":"checkbox","value": 1, "checked" : 1} );
-    	  } else {
-    	     fields.push( {'field_name':"auto_print", "label": "Auto print", "type":"checkbox","value": 1} );
-    	  }
-    	  
-    	  if($auto_print_accepted==1){
-    	  	 fields.push( {'field_name':"auto_print_after_accepted", "label": "Auto print after accepted", "type":"checkbox","value": 1, "checked" : 1} );
-    	  } else {
-    	     fields.push( {'field_name':"auto_print_after_accepted", "label": "Auto print after accepted", "type":"checkbox","value": 1} );
-    	  }
-    	  
-    	  
-    	  fields.push( {'field_name':"id", "label": "id", "type":"hidden", "value" : $id  } );
-    	  setFormFields(fields);     	
-    	break;
-    	
-    	case "booking_settings":    	  
-    	  var days = getDaysList();
-    	  
-    	  $field_list = [
-    	    {'field_name':"", "label": "maximum tables that can be booked per day", "type":"h3"},
-    	  ];
-    	      	  
-    	  $.each( days  , function( key, val ) {  
-    	  	 $class_name = 'max_booked_'+val;
-    	  	 $field_list.push( {'field_name':"max_booked["+val+"]", "label": val , "type":"text2", "value" : '' ,'class_name': $class_name  } );
-    	  });
-    	  
-    	  $field_list.push({'field_name':"merchant_table_booking", "label": "Disabled Table Booking", "type":"checkbox","value": "yes"});
-    	  
-    	  $field_list.push({'field_name':"accept_booking_sameday", "label": "Accept booking same day", "type":"checkbox","value": 2});
-    	  
-    	  $field_list.push({'field_name':"fully_booked_msg", "label": "Fully booked message", "type":"textarea", "value" : '' });
-    	  
-    	  $field_list.push({'field_name':"merchant_booking_alert", "label": "Disabled Alert Notification", "type":"checkbox","value": 1});
-    	  
-    	  $field_list.push( {'field_name':"merchant_booking_receiver", "label": "Email address" , "type":"text", "value" : ''  } );
-    	  
-    	  setFormFields($field_list);   
-    	  processAjax("getBookingSettings",'','POST');
-    	break;
-    	
-    	case "access_fine_location_permission":    	    	   
-    	   if ((typeof  $settings.location_message !== "undefined") && ( $settings.location_message !== null)) {
-    	   	   $("#"+ page_id + " .page_title").html( $settings.location_message.title );
-    	   	   $("#"+ page_id + " .page_content").html( $settings.location_message.content );
-    	   }
-    	   $("#"+ page_id + " .page_next").val( page.data.page_next );
-    	break;
-    	
     	default:
     	  //
     	break;
@@ -1836,7 +1704,6 @@ document.addEventListener('postpop', function(event) {
 		case "manage_credit_cards":
 		case "broadcast_list":
 		case "driver_list":
-		case "printer_list":
 		 current_page_id = getCurrentPage();  
 		 list_action = $("#"+ current_page_id + " .list_action" ).val();
 		 
@@ -1907,16 +1774,6 @@ document.addEventListener('preshow', function(event) {
 		  $("#order_options .notes").val('');
 		break;
 		
-		case "printer_bt_list":		 		   
-		   BT_stop_all_cron();
-		   //BT_startScan();
-		   checkBluetooth('BT_startScan');
-		break;
-		
-		case "printer_loader":
-		  BT_set_status( t("Checking printer")+ "..." );
-		break;
-		
 		default:		
 		break;
 	}
@@ -1944,7 +1801,7 @@ document.addEventListener('postshow', function(event) {
     	  ];
     	  translateForm(page_id,$_fields);  		  	  
 		break;
-						
+		
 		default:		
 		break;
 	}
@@ -2091,7 +1948,6 @@ processAjax = function(action, data , method, single_call, loader_type ){
 	  data: data ,
 	  dataType: "json",
 	  timeout: ajax_timeout,
-	  cache: false,
 	  crossDomain: true,
 	  beforeSend: function( xhr ) {                 
          clearTimeout( timer[timenow] );              
@@ -2134,7 +1990,7 @@ processAjax = function(action, data , method, single_call, loader_type ){
     	   next_action = data.details.next_action;
     	}    	
     	
-    	if( data.code==1){    		
+    	if( data.code==1){
     		switch (next_action){
     			case "show_login":       	
     			   dict = data.details.dictionary;
@@ -2146,7 +2002,7 @@ processAjax = function(action, data , method, single_call, loader_type ){
 				   }, delayed_splash_screen); 
     			break;
     			
-    			case "already_login":    		    			  
+    			case "already_login":    		
     			  if(!empty(data.details.dictionary)){
     			     dict = data.details.dictionary;
     			  }
@@ -2156,17 +2012,14 @@ processAjax = function(action, data , method, single_call, loader_type ){
     			  setStorage("merchant_token",data.details.merchant_info.merchant_token);
     			      			      
     			  setStorage("device_alert_settings", JSON.stringify(data.details.device_info));			  
-    			  subscribeDevice();    	
-    			  		      			  
+    			  subscribeDevice();    			      			  
     			  setTimeout(function(){     			   	  	    			   	  
 					   resetToPage('homepage.html','fade');
 				   }, delayed_splash_screen); 
-    			  
-    			  //showPage("printer_list.html");    			  
 				   
 				   
 				   setTimeout(function(){ 
-				      processAjax("registerDevice",'','POST','','silent'); 
+				      processAjax("registerDevice",'','POST',100,'silent'); 
 				   }, 2000);
 				   
     			break;
@@ -2273,10 +2126,7 @@ processAjax = function(action, data , method, single_call, loader_type ){
     			
     			case "set_form_options":      		    			 
     			 $.each( data.details.data  , function( key, val ) {    			 	
-    			 	$field_type = $("."+val.option_name).attr("type");    	
-
-    			 	dump(val.option_name+"=>"+$field_type);
-    			 	   			 	
+    			 	$field_type = $("."+val.option_name).attr("type");    			 	    			 	
     			 	if(empty($field_type)){
     			 		$field_type = "select";
     			 	}    			
@@ -2287,7 +2137,6 @@ processAjax = function(action, data , method, single_call, loader_type ){
     			 	if(val.option_name=="merchant_photo_bg"){
     			 		$field_type="banner";
     			 	}
-    			 	    			 	
     			 	 	
     			 	switch ($field_type){
     			 		case "checkbox":    			 		
@@ -2385,10 +2234,6 @@ processAjax = function(action, data , method, single_call, loader_type ){
     			  current_page_id = getCurrentPage(); 
     			  list_action = $("#"+ current_page_id + " .list_action" ).val();
     			  processAjax(list_action,'refresh=1','POST',27); 
-    			      			  
-    			  if (current_page_id=="printer_list"){
-    			  	  $actions_sheet_printer_reload = true;
-    			  }
     			break;
     			
     			case "fill_form":    			  
@@ -2416,14 +2261,7 @@ processAjax = function(action, data , method, single_call, loader_type ){
     			break;
     			
     			case "pop_form":
-    			 showToast( data.msg ,'success' );
-    			 
-    			 /*TOOGLE FOR PRINTER LIST*/
-    			 current_page_id = getCurrentPage();    			    
-    			 if(current_page_id=="printer_add"){
-    			 	$actions_sheet_printer_reload = true;
-    			 }
-    			 
+    			showToast( data.msg ,'success' );
     			 popPage();
     			break;
     			
@@ -2464,19 +2302,6 @@ processAjax = function(action, data , method, single_call, loader_type ){
     			  }
     			  
     			  $(".new_cancel_order_badge").html('');
-    			  
-    			  $action_taken='';
-    			  
-    			  if ((typeof  data.details.action_taken !== "undefined") && ( data.details.action_taken !== null)) {
-    			  	 $action_taken = data.details.action_taken;
-    			  }
-    			  
-    			  if($action_taken=="accepted"){
-	    			  setTimeout(function(){     			  	  
-	    			  	  $order_id = !empty(data.details.order_id)?data.details.order_id:'';     			  	      			     
-	    			  	  processAjax("getPrinterAutoAccepted",'order_id=' + $order_id,'POST','','silent'); 
-	    			  }, 2*1000);    		     	
-    			  }		  
     			break;
     			
     			case "clear_list":
@@ -2892,44 +2717,7 @@ processAjax = function(action, data , method, single_call, loader_type ){
 				   params = 'new=1&page_id=ready_order&refresh=1&order_type=ready';
 				   processAjax(list_action,params,'POST',$_timenow, 'paginate_loader');     	      	  				  
     			break;
-    			
-    			case "show_printer_list_options":        			    			   			 
-    			   $.each( data.details.data  , function( $p_key, $p_val ) {    			   	  
-    			   	  $actions_sheet_printer.push({
-    			   	    "label": $p_val.name ,
-    			   	    "modifier":"material",
-    			   	    "id":$p_val.id,
-    			   	    'order_id': $p_val.order_id
-    			   	  });
-    			   });    		
-    			   createPrinterSheet( $actions_sheet_printer );
-    			break;
-    			
-    			
-    			case "print_order":    
-    			  BT_has_perform_btscan = false;  			  
-    			  BT_printOrder(data.details.data);
-    			break;
-    			
-    			case "auto_print_receipt":    			   			 
-    			  BT_auto_print( data.details.data.order_id , data.details.data.printer_id );
-    			break;
-    			
-    			case "set_close_store":
-    			   if ((typeof  data.details.close_store !== "undefined") && ( data.details.close_store !== null)) {
-    			       setCloseStore( data.details.close_store );
-    			   }    			  
-    			   showToast( data.msg ,'success');
-    			break;
-    			
-    			case "ios_auto_print":    			   
-    			   if ((typeof  data.details.order_id !== "undefined") && ( data.details.order_id !== null)) {
-	    			     setTimeout(function(){	
-						   BT_auto_init_print( data.details.order_id );
-						 }, 2*1000);
-    			   }
-    			break;    	
-    			
+    			    			
     			default:
     			  showToast( data.msg ,'success');
     			break;
@@ -2959,21 +2747,6 @@ processAjax = function(action, data , method, single_call, loader_type ){
     			      			
     			case "clear_new_cancel_badge": 
     			 $(".new_cancel_order_badge").html('');
-    			break;
-    			
-    			case "close_all_dialog_order":    			  
-    			  accept_order = document.getElementById('accept_order');
-    			  if(!empty(accept_order)){
-    			     accept_order.hide();    	
-    			  }		      			  
-    			  
-    			  order_options = document.getElementById('order_options');
-    			  if(!empty(order_options)){
-    			     order_options.hide();    	
-    			  }		
-    			  
-    			  showToast( data.msg ,'danger');
-    			     
     			break;
     			 
     			default:
@@ -4104,7 +3877,7 @@ dateDifference = function(date_now, date_past){
 	};
 };
 
-playMedia = function($sounds_type){		
+playMedia = function($sounds_type){	
 	try {	
 		
 		if( isdebug() ){		
@@ -4212,9 +3985,9 @@ mapExternalDirection = function(lat,lng){
 	}
 }
 
-externalPhoneCall = function(phone){		
+externalPhoneCall = function(phone){
 	if(!empty(phone)){
-		window.open( "tel:" + phone , '_system' );				
+		window.open( "tel:" + phone  );
 	} else {
 		showToast( t("Empty phone number") ,'danger');
 	}
@@ -4274,7 +4047,7 @@ EnabledPush = function(){
 			window.FirebasePlugin.unsubscribe($topic_new_order, function(){		        
 		        processAjax('saveAlertOrder', "push_enabled="+enabled_push ,'', 46 );
 		    },function(error){
-		        showToast( t("Failed to unsubscribe to alert") , 'danger');
+		        showToast( t("Failed to subscribe to alert") , 'danger');
 		    });
 		}		
 	
@@ -4299,18 +4072,18 @@ EnabledSubcribe = function(){
 			processAjax('saveSubsribe', "push_alert="+push_alert ,'', 47);
 			return;
 		}
-				
+		
 		if(push_alert>0){
 			window.FirebasePlugin.subscribe($topic_alert, function(){		        
 		        processAjax('saveSubsribe', "push_alert="+push_alert ,'', 48 );
 		    },function(error){
-		        showToast( t("Failed to subscribe to alert") + " " + error  , 'danger');
+		        showToast( t("Failed to subscribe to alert") , 'danger');
 		    });
 		} else {
 			window.FirebasePlugin.unsubscribe($topic_alert, function(){		        
 		        processAjax('saveSubsribe', "push_alert="+push_alert , '', 49 );
-		    },function(error){		    	
-		        showToast( t("Failed to unsubscribe to alert") + " " + error , 'danger');
+		    },function(error){
+		        showToast( t("Failed to subscribe to alert") , 'danger');
 		    });
 		}		
 	
@@ -4705,8 +4478,7 @@ browseGallery = function(){
 
 uploadPhoto = function(imageURI){	
 	try {
-					 	
-		 	
+					 
 		 showLoader(true,'upload_loader');
 		 $(".upload_percent").html( "0%");	     		 
 		 
@@ -4797,8 +4569,7 @@ uploadPhoto = function(imageURI){
 			}
 		    
 		 }, function(error){	 	
-		 	 $(".progress_wrapper ons-progress-bar").hide();	   
-		 	 showLoader(false,'upload_loader');    	  
+		 	 $(".progress_wrapper ons-progress-bar").hide();	       	  
 		     showToast( t("An error has occurred: Code") + " "+ error.code , 'danger');
 		 }, options);
 	 
@@ -5038,15 +4809,7 @@ handlePushReceive = function(data){
 						list_action = "order_list";
 						params = 'new=1&page_id=todays_order&refresh=1&order_type=incoming';
 						processAjax(list_action,params,'POST',$_timenow, 'paginate_loader');
-					 }, 100);	    	
-
-					 if ((typeof  data.key_2 !== "undefined") && ( data.key_2 !== null)) {
-						 $key_2 = data.key_2;						 
-						 setTimeout(function(){	
-						   BT_auto_init_print( $key_2 );
-						 }, 2*1000);
-					 }
-					 
+					 }, 100);  			    	
 			    	break;
 			    	
 			    	case "auto_order_update":
@@ -5080,9 +4843,8 @@ handlePushReceive = function(data){
     	    processAjax("notificationList",params,'POST','', 'paginate_loader');     	      	  
 		}
 		
-	} else if(cordova.platformId === "ios"){ 	   
+	} else if(cordova.platformId === "ios"){ 
 	   showToast( data.aps.alert.title +"\n"+ data.aps.alert.body , 'success');   
-	   iosAutoPrint();
 	}
 };
 
@@ -5269,25 +5031,32 @@ removeAddonRow = function($object, $category_id){
     } 
 };
 
-showPrintOptions = function(order_id){		    	
-	$get_printer = true;
-	if($actions_sheet_printer.length>0){
-		$get_printer = false;
-	}
-		
-	if($actions_sheet_printer_reload){
-		$get_printer = true;
-		$actions_sheet_printer_reload = false;
-	}
-	
-	$get_printer = true;
-	
-	if($get_printer){
-	   $actions_sheet_printer = [];
-   	   processAjax("getPrinterOptions","order_id=" + order_id);   
-	} else {	   
-	   createPrinterSheet( $actions_sheet_printer );
-	}
+showPrintOptions = function(order_id){
+		 
+  $actions_sheet_printer =  [      
+      {
+        label: t('FP-80WC 80mm WIFI printer'),
+        modifier: 'material'
+      }/*,
+      {
+        label: t('Bluetooth printer'),        
+        modifier: 'material'
+      }*/
+    ];
+    
+   ons.openActionSheet({
+	    title: t('Choose printer'),
+	    modifier : "material",
+	    cancelable: true,
+	    buttons: $actions_sheet_printer
+   }).then(function (index) { 
+  	    if(index==0){
+  	    	//processAjax = function(action, data , method, single_call, loader_type ){
+  	    	processAjax("PrintThermal","id="+ order_id );
+  	    } else if (index==1) {
+  	    	
+  	    }
+   });
 };
 
 
@@ -5353,27 +5122,27 @@ CameraUpload = function(){
 	    }, 1000);
 		return;
 	} 
-		
+	
+	$resize = getResizeImage();	
+
 	try {
-		
-		$resize = getResizeImage();
 		
 		var cam_options = {
 			destinationType: Camera.DestinationType.FILE_URI,
-		    sourceType: Camera.PictureSourceType.CAMERA,		    
+		    sourceType: Camera.PictureSourceType.CAMERA,
 		    popoverOptions: new CameraPopoverOptions(300, 300, 100, 100, Camera.PopoverArrowDirection.ARROW_ANY)
 		};
 		
 		if($resize.resize==1 && $resize.width>0 && $resize.height>0){		
 			cam_options={
 				destinationType: Camera.DestinationType.FILE_URI,
-			    sourceType: Camera.PictureSourceType.CAMERA,			    
-			    popoverOptions: new CameraPopoverOptions(300, 300, 100, 100, Camera.PopoverArrowDirection.ARROW_ANY)
-			    /*targetHeight:  parseInt($resize.height) ,
-				targetWidth:   parseInt($resize.width)*/
+			    sourceType: Camera.PictureSourceType.CAMERA,
+			    popoverOptions: new CameraPopoverOptions(300, 300, 100, 100, Camera.PopoverArrowDirection.ARROW_ANY),
+			    targetHeight:  $resize.height ,
+				targetWidth:   $resize.width
 			};
-		}					
-				
+		}
+		
 		navigator.camera.getPicture(uploadPhoto, function(message){
 		    //showToast( t('Failed because:') + " " + message);
 		},cam_options);
@@ -5384,7 +5153,6 @@ CameraUpload = function(){
 };
 
 getResizeImage = function(){	
-			
 	$settings = getMerchantSettings();
 	$resize = false; $width=''; $height='';
 	if ((typeof  $settings.options.merchantapp_upload_resize_enabled !== "undefined") && ( $settings.options.merchantapp_upload_resize_enabled  !== null)) {
@@ -5402,134 +5170,4 @@ getResizeImage = function(){
 		'width':parseInt($width),
 		'height':parseInt($height),
 	};
-			
-};
-
-setCloseStore = function($value){	
-	$value = $value==1?false:true;	
-	$(".merchant_close_store2").attr("checked", $value );	
-};
-
-addListenerCloseStore = function(){
-	document.querySelector('.merchant_close_store2').addEventListener('change', function() {
-		var $value = $("input[name=merchant_close_store2]:checked").val();
-		if ((typeof  $value !== "undefined") && ( $value !== null)) {
-		    $value = 0;
-		} else $value = 1;
-		processAjax("updateCloseStore",'value='+ $value,'POST'); 
-	});
-};
-
-iosAutoPrint = function(){
-	setTimeout(function(){ 
-		processAjax("iosAutoPrint",'','POST','','silent'); 
-    }, 1000);
-};
-
-checkAccessFineLocation = function($page_permission, $page_next ){
-	
-	 if( isdebug() ){		
-	 	$access_fine_location = parseInt(getStorage("access_fine_location"));	 	
-	 	
-	 	if($access_fine_location==1){	 		
-	 		showPage($page_next);
-	 	} else {	 		
-		 	showPage($page_permission,'lift',{
-		 		'page_next': $page_next
-		 	});
-	 	}
-		return ;
-	 }	 
-	 
-	 cordova.plugins.diagnostic.isLocationAuthorized(function(authorized){
-	 	if(authorized){
-	 		showPage($page_next);
-	 	} else {	 			 		
-	 		showPage($page_permission,'lift',{
-	 			'page_next':$page_next
-	 		});
-	 	}
-	 }, function(error){
-	   showToast( t("The following error occurred:")  + " " + error ,'danger');
-	});
-};
-
-requestFineLocation = function(){
-	
-	current_page_id = getCurrentPage();
-	$page_next = $("#"+ current_page_id + " .page_next" ).val();
-	
-	if( isdebug() ){			 	
-		ons.notification.confirm( t("Allow location to access device location"),{
-			title: t("Location permission") ,		
-			id : "dialog_order_options",
-			modifier: " ",			
-			buttonLabels : [ t("Yes") , t("Cancel") ]
-		}).then(function(input) {				
-			if (input==0){
-				setStorage("access_fine_location",1);
-				replacePage($page_next);
-			}
-	   }); 		
-	   return ;
-	 }	 
-	 
-	 cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
-	    switch(status){
-	        case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
-	            showToast( t("Permission not requested") , 'danger' );			            
-	            break;
-	        case cordova.plugins.diagnostic.permissionStatus.DENIED:			            
-	            showToast( t("Printer needs location enabled"), 'danger' );	            
-	            break;
-	        case cordova.plugins.diagnostic.permissionStatus.GRANTED:
-	            replacePage($page_next);
-	            break;
-	        case cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE:
-	            replacePage($page_next);
-	            break;
-	    }
-	}, function(error){
-	    showToast(error ,'danger');
-	}, cordova.plugins.diagnostic.locationAuthorizationMode.ALWAYS); 			
-};
-
-canPublished = function(){	
-  $settings_json=[]; $can_published = false;	
-  if($merchant_info = getMerchantInfo()){
-  	  $settings_json = JSON.parse($merchant_info.user_access);		  	  
-  	  $_continue = $.isArray($settings_json)?true:false;
-      $_continue = $settings_json.length>0?true:false;
-      if($_continue){		      	 
-      	 $found_access = $.inArray( 'can_published_merchant' , $settings_json );		      	 
-      	 if($found_access>=0){
-      	 	$can_published = true;
-      	 }
-      } else {
-      	 $can_published = true;
-      }
-  }
-  return $can_published;	
-};
-
-
-browseLink = function(url){
-	if(!empty(url)){
-		if( isdebug() ){	
-		    window.open(url);		   
-		} else {
-			browse_inapp = cordova.InAppBrowser.open( url  , '_blank', 'location=no' );
-		}
-	}
-};
-
-openPrivacyPolicy = function(){
-	$privacy_link = 'javascript:;'; $settings = getMerchantSettings(); 
-	
-	if ((typeof  $settings.options.merchantapp_privacy_policy_link !== "undefined") && ( $settings.options.merchantapp_privacy_policy_link !== null)) {
-	  	  if(!empty($settings.options.merchantapp_privacy_policy_link)){
-	  	  	  $privacy_link = $settings.options.merchantapp_privacy_policy_link;
-	  	  }
-	}  	
-	browseLink($privacy_link);
 };

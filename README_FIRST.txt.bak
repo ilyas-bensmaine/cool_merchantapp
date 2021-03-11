@@ -1,20 +1,4 @@
 
-
-PLEASE USE THE package_android.json for android
-and package_ios.json for ios to avoid any issue during compiling the app
-and ios submission
-
-1. for android kindly use the package_android.json
-copy the content of package_android.json to package.json
-
-2. for ios please use the package_ios.json
-copy the content of package_ios.json to package.json
-
-
-================================================================================================
-
-
-
 Common issue with compiling the app
 
 
@@ -97,25 +81,3 @@ this will be lost or replace by monaca if you go to ios build settings and saved
       <param name="ios-package" value="CDVWKWebViewEngine"/>
     </feature>
     <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine"/>
-    
-
-
-
-================================================================================================
-
-IOS PUSH  NOT WORKING
-
-in your package.json
-
-replace this 
-
-"cordova-plugin-firebasex": "9.1.1-cli"
-
-with
-
-"cordova-plugin-firebasex": "10.1.2-cli"
-
-and you need to upload apns auth key instead of pem file
-
-https://developer.clevertap.com/docs/how-to-create-an-ios-apns-auth-key
-    

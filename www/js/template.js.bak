@@ -11,13 +11,6 @@ setMerchantHeader = function(){
 		  html+='<ons-col vertical-align="top" class="to_center">';
 		    html+='<h3>'+ $info.restaurant_name +'</h3>';
 		    html+='<div class="rounded_tag breadcrumbs">'+ t("merchant") +'</div>';
-		    
-		    
-		    $can_published = canPublished();		    
-		    if($can_published){
-		       html+='<div><ons-switch modifier="material" name="merchant_close_store2" class="merchant_close_store2"></ons-switch></div>';
-		    }
-		    
 		  html+='</ons-col>';
 		  html+='<ons-col vertical-align="top" width="25%" class="to_right" >';
 		  
@@ -52,11 +45,7 @@ setDashboardMenu = function(data){
 		if($_continue){
 			$new_data = [];
 			$.each( data  , function( key, val ) {
-				if(!empty(val.access_id)){
-				   $found_access = $.inArray( val.access_id , $settings_json );
-				} else {
-					$found_access= 1;
-				}
+				$found_access = $.inArray( val.access_id , $settings_json );
 				if($found_access>=0){
 					$new_data.push(val);
 				}
@@ -432,32 +421,6 @@ setFormFields = function(fields){
 			   html+='</ons-button>';
 			   html+='</div>'; 
 	
-			break;
-			
-			
-			case "text_bt":			
-			
-			html+='<div class="field_label">';
-			   html+='<ons-row>';   
-
-			   html+='<ons-col width="65%" >';					
-			   html+='<ons-input type="text" name="'+ val.field_name +'" id="'+ val.field_name +'" class="'+ val.field_name +'" modifier="material underbar"	 ';
-			    html+='placeholder="'+ t(val.label) +'" '+ attributes +'  float></ons-input>';			   
-			   
-			   html+='</ons-col>';
-			   
-			   html+='<ons-col>';					
-			   
-				html+='<ons-button modifier="material black_btn_normal" onclick="showDialog(1,' + q("printer_bt_list") + ');" >';
-				html+='<span class="trn">SEARCH</span>';
-				html+='</ons-button>';
-			   
-			   html+='</ons-col>';
-			   
-			   html+='</ons-row>';	
-			   
-			html+='</div>';   
-			
 			break;
 			
 		}
@@ -1075,10 +1038,8 @@ setOrderList = function(page_id, data, $settings){
 		    html+='<h4><span class="kcircle_small">'+ val.total_items +'</span>'+ val.items +'</h4>';		    
 		    
 		    if ((typeof  val.delivery_time !== "undefined") && ( val.delivery_time !== null)) {
-		    	if(!empty(val.delivery_time)){
-				    html+='<p><span class="">'+ val.delivery_time+'</span> ';
-				    html+='<ons-icon icon="md-time" class="ion_small" ></ons-icon></p>';
-		    	}
+		    html+='<p><span class="">'+ val.delivery_time+'</span> ';
+		    html+='<ons-icon icon="md-time" class="ion_small" ></ons-icon></p>';
 		    }
 		    
 		    if(val.status_raw !="pending"){
@@ -1199,20 +1160,11 @@ setOrderList = function(page_id, data, $settings){
         if ((typeof val.assigned_driver !== "undefined") && ( val.assigned_driver !== null)) {
         	$assigned_driver = val.assigned_driver;
         }
-
-        
-        $print_enabled_printer = false;
-        if ((typeof  $settings.options.print_enabled_printer !== "undefined") && ( $settings.options.print_enabled_printer !== null)) {        	
-        	if($settings.options.print_enabled_printer==1){
-        		$print_enabled_printer = true;
-        	}
-        }
-        
+    
 	    /*PRINT & DRIVER ASSIGN BUTTON*/
 	    html+='<div class="actions_wrap">';
 	     html+='<ons-row>';
 	     
-	        if($print_enabled_printer){
 	        html+='<ons-col vertical-align="center" class="to_center" > ';	        
 	           html+='<ons-button modifier="quiet action_button button_print" onclick="showPrintOptions('+  q(val.order_id) +  ');" >';
 	            html+='<div class="inner">';			        			        
@@ -1221,7 +1173,6 @@ setOrderList = function(page_id, data, $settings){
 		        html+='</div>';
 		      html+='</ons-button>';		      
 	        html+='</ons-col>';
-	        }
 	        	              
 	        if(!empty($do_action_2) && val.trans_type_raw=="delivery" && $driver_addon==true){
 	        			        
@@ -1336,14 +1287,6 @@ setOrderCount = function(page_id, total){
 
 setOrderDetails = function(data, history_data){
 	page_id = getCurrentPage();
-	$settings = getMerchantSettings();
-	
-	$print_enabled_printer = false;
-    if ((typeof  $settings.options.print_enabled_printer !== "undefined") && ( $settings.options.print_enabled_printer !== null)) {        	
-    	if($settings.options.print_enabled_printer==1){
-    		$print_enabled_printer = true;
-    	}
-    }
 	
 	var object = $("#" + page_id + " ons-list" );
 	var list = object[0];	
@@ -1411,22 +1354,17 @@ setOrderDetails = function(data, history_data){
 	 	    html+='</ons-col>';
 	 	    html+='<ons-col vertical-align="top" width="25%"  class="to_right" >';
 	 	       if(!empty(data.order_data.contact_phone)){
-		 	       //html+='<ons-fab modifier="mini fabred" onclick="externalPhoneCall('+ q(data.order_data.contact_phone) +')" >';
-		 	       html+='<a href="tel:'+ data.order_data.contact_phone  +'">';
-		 	       html+='<ons-fab modifier="mini fabred">';
+		 	       html+='<ons-fab modifier="mini fabred" onclick="externalPhoneCall('+ q(data.order_data.contact_phone) +')" >';
 		            html+='<ons-icon icon="md-phone"></ons-icon>';
 		           html+='</ons-fab>';
-		           html+='</a>';
 	 	       }
 	 	    html+='</ons-col> '; 
 	 	    
-	 	    if($print_enabled_printer){
-		 	    html+='<ons-col vertical-align="top" width="25%"  class="to_right" >';	 	       
-		 	       html+='<ons-fab modifier="mini fabred" onclick="showPrintOptions('+  q(data.order_data.order_id) +  ');" >';
-		            html+='<ons-icon icon="md-print"></ons-icon>';
-		           html+='</ons-fab>';	 	       
-		 	    html+='</ons-col> '; 
-	 	    }
+	 	    html+='<ons-col vertical-align="top" width="25%"  class="to_right" >';	 	       
+	 	       html+='<ons-fab modifier="mini fabred" onclick="showPrintOptions('+  q(data.order_data.order_id) +  ');" >';
+	            html+='<ons-icon icon="md-print"></ons-icon>';
+	           html+='</ons-fab>';	 	       
+	 	    html+='</ons-col> '; 
  	   html+='</ons-row>';
  	   } else {
  	   	
@@ -2776,92 +2714,4 @@ setDriverProfile = function(page_id, data, $settings){
    list.appendChild(row);
    html=''; 
 	     
-};
-
-createPrinterSheet = function( data ){
-	ons.openActionSheet({
-		title: t('Choose printer'),
-		modifier : "material",
-		cancelable: true,
-		buttons: data
-	}).then(function (index) { 				  	    
-		dump(data[index]);
-		if ((typeof  data[index] !== "undefined") && ( data[index] !== null)) {
-			//
-		} else {
-			return ;
-		}
-		$id = data[index].id;
-		order_id = data[index].order_id;
-		dump("order_id=>"+ order_id);
-		switch ($id){
-			case "-1":
-			case -1:				  	    	  
-			  processAjax("PrintThermal","id="+ order_id );
-			break;
-			
-			case "-2":
-			case -2:
-			  //showPage("printer_list.html");
-			  checkAccessFineLocation('access_fine_location_permission.html','printer_list.html');
-			break;
-			
-			default: 
-			  //dump2("order_id=>"+ order_id + " printer_id="+ $id);
-			  processAjax("PrintOrder","order_id="+ order_id + "&printer_id=" + $id );
-			break;
-		}
-	});
-};
-
-
-
-function str_pad (input, pad_length, pad_string, pad_type) {
-
-  // *     example 1: str_pad('', 30, '-=', 'STR_PAD_LEFT');
-  // *     returns 1: '-=-=-=-=-=-foo bar milk'
-  // *     example 2: str_pad('foo bar milk', 30, '-', 'STR_PAD_BOTH');
-  // *     returns 2: '------foo bar milk-----'
-
-  var half = '',
-    pad_to_go;
-
-  var str_pad_repeater = function (s, len) {
-    var collect = '',
-      i;
-
-    while (collect.length < len) {
-      collect += s;
-    }
-    collect = collect.substr(0, len);
-
-    return collect;
-  };
-
-  input += '';
-  pad_string = pad_string !== undefined ? pad_string : ' ';
-
-  if (pad_type != 'STR_PAD_LEFT' && pad_type != 'STR_PAD_RIGHT' && pad_type != 'STR_PAD_BOTH') {
-    pad_type = 'STR_PAD_RIGHT';
-  }
-  if ((pad_to_go = pad_length - input.length) > 0) {
-    if (pad_type == 'STR_PAD_LEFT') {
-      input = str_pad_repeater(pad_string, pad_to_go) + input;
-    } else if (pad_type == 'STR_PAD_RIGHT') {
-      input = input + str_pad_repeater(pad_string, pad_to_go);
-    } else if (pad_type == 'STR_PAD_BOTH') {
-      half = str_pad_repeater(pad_string, Math.ceil(pad_to_go / 2));
-      input = half + input + half;
-      input = input.substr(0, pad_length);
-    }
-  }
-
-  return input;
-}
-
-getDaysList = function(){
-	var days = [
-    	    'monday','tuesday','wednesday','thursday','friday','saturday','sunday'
-    	  ];
-   return days; 	  
 };

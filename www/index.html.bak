@@ -26,7 +26,7 @@
   </ons-if>
 
   <script src="lib/onsen/js/onsenui.min.js"></script>
-  <script src="lib/jquery-3.5.1.min.js"></script>  
+  <script src="lib/jquery-v3.4.1.js"></script>  
   <script type="text/javascript" src="cordova.js"></script>   
     
   <script src="lib/raty/jquery.raty.js"></script>
@@ -58,8 +58,6 @@
   <script src="js/template.js?version=1.0.0"></script>  
   <script src="js/app.js?version=1.0.0"></script>  
   <script src="js/map-wrapper.js?version=1.0.0"></script>     
-  <script src="js/escpos.js?version=1.0.0"></script> 
-  <script src="js/bluetooth.js?version=1.0.0"></script>   
 </head>
 <body>
 
@@ -270,7 +268,7 @@
 	
 	<ons-tabbar position="bottom" modifier="ktabbar_bottom"  animation-options="{duration: 0.1, delay: 1, timing: 'ease-in'}" >
 	
-	   <ons-tab page="dashboard.html">
+	   <ons-tab page="dashboard.html" active="true">
 		  <input type="radio" style="display: none" />
 		  <button class="tabbar__button tabbar--tab_left__button">	    		  
 		  <div class="tabbar__badge notification new_cancel_order_badge pulse"></div>
@@ -726,10 +724,6 @@
    </div>
 	
    <div class="spacer"></div>
-   
-    <ons-fab position="bottom left" modifier="material mini" onclick="showPage('booking_settings.html');">
-     <ons-icon icon="md-settings"></ons-icon>
-   </ons-fab>
   
 </ons-page>
 </template>  
@@ -1017,10 +1011,6 @@
     <ons-list-item tappable modifier="chevron" onclick="showPage('device_info.html','lift')" >
      <span class="trn">Device information</span>
     </ons-list-item>    
-        
-    <ons-list-item tappable modifier="chevron" onclick="openPrivacyPolicy();" >    
-    <span class="trn">Privacy policy</span>    
-    </ons-list-item>       
     
     <ons-list-header>
      <span class="trn">Display</span>
@@ -1060,14 +1050,6 @@
          modifier="material" onclick="EnabledSubcribe()"></ons-switch>
       </div>
     </ons-list-item>
-    
-    <ons-list-header>
-     <span class="trn">Printers</span>
-    </ons-list-header>
-    
-    <ons-list-item tappable modifier="chevron" onclick="checkAccessFineLocation('access_fine_location_permission.html','printer_list.html');" >
-     <span class="trn">Settings</span>
-    </ons-list-item>    
     
     <ons-list-item ></ons-list-item>
     
@@ -3286,195 +3268,6 @@ placeholder="Enter your PIN" maxlength="4" required float></ons-input>
 </ons-page>
 </template>    
 
-
-<template id="printer_list.html">
-  <ons-page id="printer_list" modifier="kform_page kpage_pullhook" >  
-
-  <ons-toolbar>
-   <div class="left"><ons-back-button></ons-back-button></div>      
-  </ons-toolbar>
-  
-  <ons-pull-hook id="pull_hook"></ons-pull-hook>
-  
-    <div class="top_sections">	
-         <div class="to_center">
-         <h3 class="trn">Printers</h3>
-	     <div class="sub_title rounded_tag trn">settings</div>
-	     </div>
-	</div>
-	
-	<input type="hidden" name="end_of_list" class="end_of_list" value="0"> 
-	<input type="hidden" name="list_action" class="list_action" value="printerList"> 
-	<input type="hidden" name="delete_action" class="delete_action" value="printerDelete"> 
-	<input type="hidden" name="get_action" class="get_action" value="printerGet">
-    
-	<form id="frm_printer_list" class="frm_printer_list" method="POST" onsubmit="return false;" > 
-	<div class="field_label field_with_icon">
-	   <ons-input type="text" name="s" id="s" modifier="material underbar"	   
-	    placeholder="Search" required float></ons-input>
-	    <ons-button modifier="quiet" onclick="submitForm('.frm_printer_list','printerList')" >
-	      <ons-icon icon="md-search"></ons-icon>
-	    </ons-button>
-	</div>
-	</form>
-	
-	<ons-list modifier="list_column"> 
-	</ons-list>
-	
-	<div class="no_list"></div>
-	
-	<div  class="paginate_loader">
-      <ons-progress-circular indeterminate></ons-progress-circular> 
-    </div>
-    
-    <div class="spacer"></div>
-    
-    <ons-fab position="bottom right" modifier="material mini" onclick="showPage('printer_add.html');">
-     <ons-icon icon="md-plus"></ons-icon>
-    </ons-fab>
-		
-</ons-page>
-</template>    
-
-
-<template id="printer_add.html">
-  <ons-page id="printer_add" modifier="kform_page" >  
-
-  <ons-back-button></ons-back-button>
-  
-    <div class="top_sections">	
-         <div class="to_center">
-         <h3 class="trn">Add printer</h3>	     
-	     </div>
-	</div>
-  
-	<form id="frm_printer" class="frm_printer" method="POST"></form> 
-	
-	<ons-button modifier="material large yellow_btn" onclick="BT_print_test();" >
-	   <ons-icon icon="md-print"></ons-icon> <span class="trn">PRINT TEST</span>
-	</ons-button>
-	
-	
-	<div class="spacer"></div>
-	
-	<ons-bottom-toolbar modifier="form_bottom_small is_center">	
-	   <ons-button modifier="material large black_btn" onclick="submitForm('.frm_printer','AddPrinter')" >	   
-	   <span class="trn">SAVE</span>
-	   </ons-button>
-	</ons-bottom-toolbar>
-	
-  </ons-page>
-</template>    
-
-
-
-<template id="printer_bt_list.html">
-  <ons-dialog id="printer_bt_list" modifier="dialog_medium dialog_white_bg" animation="none" >
-    <div class="content_inner">
-        
-    <ons-row >
-     <ons-col vertical-align="center" width="50px" >
-       <ons-progress-circular indeterminate></ons-progress-circular>
-     </ons-col>
-     <ons-col vertical-align="center" >
-        <h3 style="text-align:left;" class="trn">Bluetooth printer</h3>        
-     </ons-col>
-    </ons-row>
-          
-    <ons-list modifier="klist"></ons-list>  
-    
-    
-     <div class="postion_fixed_bottom">
-	   <ons-button modifier="quiet material material--flat" onclick="BT_close_dialog_device_list();" >
-	   <span class="trn">CANCEL</span>
-	   </ons-button>
-	 </div>
-                
-    </div> <!--content_inner-->
-  </ons-dialog>
-</template>
-
-
-<template id="printer_loader.html">
-  <ons-dialog id="printer_loader" modifier="dialog_printer_loader dialog_white_bg" animation="none">
-    <div class="content_inner">
-        
-    <ons-row >
-     <ons-col vertical-align="center" width="50px" >
-       <ons-progress-circular indeterminate></ons-progress-circular>
-     </ons-col>
-     <ons-col vertical-align="center" >
-       <h3 style="text-align:left;"></h3>
-     </ons-col>
-    </ons-row>
-                         
-    </div> <!--content_inner-->
-  </ons-dialog>
-</template>
-
-<template id="booking_settings.html">
-  <ons-page id="booking_settings" modifier="kform_page" >  
-
-  <ons-back-button></ons-back-button>
-  
-    <div class="top_sections">	
-         <div class="to_center">
-         <h3 class="trn">Booking</h3>
-	     <div class="sub_title trn">settings</div>
-	     </div>
-	</div>
-	
-	<form id="frm_booking_settings" class="frm_booking_settings" method="POST" onsubmit="return false"> 		  	   	   
-	</form>
-	
-	<div class="spacer"></div>
-
-	<ons-bottom-toolbar modifier="form_bottom_small is_center">		   
-	   <ons-button modifier="material large black_btn" onclick="submitForm('.frm_booking_settings','SavedBookingSettings')" >
-	   <span class="trn">SAVE</span>
-	   </ons-button>	   
-	</ons-bottom-toolbar>
-
-</ons-page>
-</template>    
-
-<template id="access_fine_location_permission.html">
-  <ons-page id="access_fine_location_permission" modifier="kform_page_white" >  
-
-  <div class="to_center">
-  
-  <input type="hidden" name="page_next" class="page_next" id="page_next">
-  
-  <ons-icon icon="md-pin" style="font-size:30px;color:#fedc79"></ons-icon>
-  <h3 class="trn page_title"></h3>
-  
-  <p class="page_content"></p>
-
-  <img class="access_fine_image" src="images/street-map.png">
-
-  </div>
-  
-  <ons-bottom-toolbar modifier="form_bottom_small">		    
-  <ons-row>
-   <ons-col vertical-align="top" width="50%" class="to_left" >
-  
-   <ons-button modifier="quiet material material--flat remove_underline" onclick="popPage();">
-	   <span class="trn">No thanks</span>
-	</ons-button>
-   
-   </ons-col>
-   <ons-col vertical-align="top" width="50%" class="to_right" >
-   
-   <ons-button modifier="quiet material material--flat remove_underline" onclick="requestFineLocation();">
-	   <span class="trn">Turn on</span>
-	</ons-button>
-   
-   </ons-col>
-  </ons-row>
-  </ons-bottom-toolbar>
-  
-</ons-page>
-</template>    
 
 </body>
 </html>
